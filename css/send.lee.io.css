@@ -1,0 +1,147 @@
+* {
+	margin:0;
+	padding:0;
+}
+
+
+html {
+	overflow:hidden;
+}
+
+a, a:visited {
+	outline:none;
+	color:#fff;
+}
+
+a:hover {
+	text-decoration:none;
+}
+
+body {
+	
+	height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	font:14px/1.3 'Raleway', sans-serif;
+	color: #fff;
+
+	overflow:hidden;
+	background-color: #E7A8D1;
+}
+
+input[readonly] {
+  background-color: white !important;
+  cursor: text !important;
+}
+
+@media (min-width: 800px) {
+    #upload-box {
+        padding: 80px !important;
+        min-width: 400px !important;
+    }
+
+}
+#upload-box {
+    padding: 20px;
+    border: 3px dashed #fff;
+    border-radius: 4px;
+}
+
+#upload-box .icon {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    font-size: 60px;
+}
+
+#upload-box .content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    font-size: 18px;
+}
+
+#upload-box .content .left-margin {
+    margin-left: 5px;
+}
+
+#upload-box .input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+#progress {
+  width: 275px;
+}
+
+.select-style {
+    display: flex;
+    justify-content: center;
+}
+
+.select-style select {
+    padding: 5px 8px;
+    width: 120px;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+    color: #fff;
+    background: #E7A8D1;
+}
+
+.select-style select:focus {
+    outline: none;
+}
+
+/*Tooltip Styles*/
+
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]:before,
+[data-tooltip]:after {
+  display: none;
+  position: absolute;
+  top: 5px;
+}
+
+[data-tooltip]:before {
+  border-bottom: .6em solid #09f;
+  border-bottom: .6em solid rgba(0,153,255,0.8);
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  content: "";
+  left: 0px;
+  margin-top: 1em;
+}
+
+[data-tooltip]:after {
+  background-color: #0099ff;
+  background-color: rgba(0,153,255,0.8);
+  border: 2px solid #0099ff;
+  border: 2px solid rgba(0,153,255,0.8);
+  border-radius: 7px;
+  color: #ffffff;
+  content: "Files are encrypted/decrypted client-side, and burned on download (or automatically removed after 24 hours)";
+  left: -15px;
+  margin-top: 1.5em;
+  padding: 5px 15px;
+  white-space: pre-wrap;
+  width: 350px;
+  z-index:5000;
+}
+
+[data-tooltip]:hover:after,
+[data-tooltip]:hover:before {
+  display: block;
+}
