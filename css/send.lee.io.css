@@ -1,38 +1,37 @@
 * {
-	margin:0;
-	padding:0;
+    margin:0;
+    padding:0;
 }
 
 
 html {
-	overflow:hidden;
+   overflow:hidden;
 }
 
 a, a:visited {
-	outline:none;
-	color:#fff;
+    outline:none;
+    color:#fff;
 }
 
 a:hover {
-	text-decoration:none;
+   text-decoration:none;
 }
 
 body {
-	
-	height: 100vh;
+  
+  height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-	font:14px/1.3 'Raleway', sans-serif;
-	color: #fff;
-
-	overflow:hidden;
-	background-color: #E7A8D1;
+    font:14px/1.3 'Raleway', sans-serif;
+    color: #fff;
+    overflow:hidden;
+    background-color: #E7A8D1;
 }
 
 input[readonly] {
-  background-color: white !important;
-  cursor: text !important;
+    background-color: white !important;
+    cursor: text !important;
 }
 
 @media (min-width: 800px) {
@@ -77,7 +76,7 @@ input[readonly] {
 }
 
 #progress {
-  width: 275px;
+    width: 275px;
 }
 
 .select-style {
@@ -110,38 +109,38 @@ input[readonly] {
 
 [data-tooltip]:before,
 [data-tooltip]:after {
-  display: none;
-  position: absolute;
-  top: 5px;
+    display: none;
+    position: absolute;
+    top: 5px;
 }
 
 [data-tooltip]:before {
-  border-bottom: .6em solid #09f;
-  border-bottom: .6em solid rgba(0,153,255,0.8);
-  border-left: 7px solid transparent;
-  border-right: 7px solid transparent;
-  content: "";
-  left: 0px;
-  margin-top: 1em;
+    border-bottom: .6em solid #09f;
+    border-bottom: .6em solid rgba(0,153,255,0.8);
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    content: "";
+    left: 0px;
+    margin-top: 1em;
 }
 
 [data-tooltip]:after {
-  background-color: #0099ff;
-  background-color: rgba(0,153,255,0.8);
-  border: 2px solid #0099ff;
-  border: 2px solid rgba(0,153,255,0.8);
-  border-radius: 7px;
-  color: #ffffff;
-  content: "Files are encrypted/decrypted client-side, and burned on download (or automatically removed after 24 hours)";
-  left: -15px;
-  margin-top: 1.5em;
-  padding: 5px 15px;
-  white-space: pre-wrap;
-  width: 350px;
-  z-index:5000;
+    background-color: #0099ff;
+    background-color: rgba(0,153,255,0.8);
+    border: 2px solid #0099ff;
+    border: 2px solid rgba(0,153,255,0.8);
+    border-radius: 7px;
+    color: #ffffff;
+    content: "Files are encrypted/decrypted client-side, and burned on download (or automatically removed after 24 hours)";
+    left: -15px;
+    margin-top: 1.5em;
+    padding: 5px 15px;
+    white-space: pre-wrap;
+    width: 350px;
+    z-index:5000;
 }
 
 [data-tooltip]:hover:after,
 [data-tooltip]:hover:before {
-  display: block;
+    display: block;
 }
