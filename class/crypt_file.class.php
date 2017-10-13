@@ -169,17 +169,15 @@ class crypt_file
     public function burn()
     {
         $file_path = $this->get_filepath();
-        if (!file_exists($file_path))
+        if (file_exists($file_path))
         {
-            return;
-        }
+            if (!unlink($file_path))
+            {
+                $status_message = "Failed to delete file";
+                $this->set_status(CRYPT_FILE_STATUS_ERROR, $status_message);
 
-        if (!unlink($file_path))
-        {
-            $status_message = "Failed to delete file";
-            $this->set_status(CRYPT_FILE_STATUS_ERROR, $status_message);
-
-            throw new Exception($status_message);
+                throw new Exception($status_message);
+            }
         }
 
         $this->delete();
