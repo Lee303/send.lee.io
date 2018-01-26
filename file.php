@@ -2,7 +2,7 @@
 
 include_once('config.php');
 include_once('../../globals/class/db.class.php');
-include_once('class/crypt_file.class.php');
+include_once('class/file.class.php');
 
 try
 {    
@@ -13,14 +13,14 @@ try
 
     $db = new db(DB_HOST, DB_NAME, DB_USER, DB_PASSWORD);
 
-    $crypt_file = crypt_file::get($db, $_GET['id']);
+    $file = file::get($db, $_GET['id']);
     
-    if ($crypt_file->status != CRYPT_FILE_STATUS_COMPLETE)
+    if ($file->status != FILE_STATUS_COMPLETE)
     {
         throw new Exception("Invalid file");
     }
 
-    echo json_encode(array('filename'=>$crypt_file->filename, 'id'=>$crypt_file->uniq_id));
+    echo json_encode(array('filename'=>$file->filename, 'id'=>$file->uniq_id));
 }
 catch(Exception $ex)
 {

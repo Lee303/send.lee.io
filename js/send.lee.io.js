@@ -1,4 +1,3 @@
-var debug = false;
 var jqContent = $('#content');
 
 
@@ -107,7 +106,13 @@ function uiSetUploadComplete(id, passphrase) {
 }
 
 function uiSetDownloadComplete(url, filename) {
-    uiSetContent(`File burnt. <a href="${url}" download="${filename}" target="_blank" class="left-margin clickable">Download!</a>`);
+    uiSetContent(`File burnt`);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
 }
 
 function uiSetEncryptionProgress() {
@@ -158,10 +163,6 @@ function uploadFile(file) {
                 return;
             }
 
-            if (debug) {
-                console.log("Encrypted: "+encrypted.data);
-            }
-
             console.log('Uploading file');
             var progress = uiSetProgress();
 
@@ -184,10 +185,6 @@ function uploadFile(file) {
                     return xhr;
                 },
                 error: function(jqXHR, textStatus) {
-                    if (debug) {
-                        console.log('Upload request failed; StatusCode=['+jqXHR.status+'] Message=['+jqXHR.statusText+'] ResponseText=['+jqXHR.responseText +']');
-                    }
-
                     uiSetUploadFailed('Upload failed. Please try again later');
                 },
                 success: function(data, textStatus, jqXHR) {
@@ -200,6 +197,13 @@ function uploadFile(file) {
     reader.readAsDataURL(file);
 }
 
+function processDownloadedFile(file, data) {
+    var blob = dataUrlToBlob(data);
+    var objectURL = URL.createObjectURL(blob);
+    uiSetDownloadComplete(objectURL, file.filename);
+    //URL.revokeObjectURL(objectURL);
+}
+
 function downloadFile(file, passphrase) {
 
     console.log('Downloading file: '+file.id);
@@ -209,36 +213,23 @@ function downloadFile(file, passphrase) {
         url: '/download.php?id='+file.id,
         type: 'GET',
         error: function(jqXHR, textStatus) {
-            if (debug) {
-                console.log('Download request failed; StatusCode=['+jqXHR.status+'] Message=['+jqXHR.statusText+'] ResponseText=['+jqXHR.responseText +']');
-            }
-
             uiSetDownloadFailed(jqXHR.responseText);
         },
         success: function(data, textStatus, jqXHR) {
-            if (debug) {
-                console.log('Download request complete');
+            if (passphrase != null) {
+                console.log('Passphrase provided, decrypting data');
+                uiSetDecryptionProgress();
+
+                var result = decryptData(data, passphrase, function(decrypted) {
+                    if (decrypted.success != true) {
+                        uiSetDownloadFailed('Failed to decrypt data: '+decrypted.data);
+                        return;
+                    }
+                    processDownloadedFile(file, decrypted.data);
+                });
+            } else {
+                processDownloadedFile(file, data);
             }
-
-            console.log('Decrypting file');
-            uiSetDecryptionProgress();
-
-            var result = decryptData(data, passphrase, function(decrypted) {
-                if (decrypted.success != true) {
-                    uiSetDownloadFailed('Failed to decrypt data: '+decrypted.data);
-                    return;
-                }
-
-                if (debug) {
-                    console.log("Decrypted: "+decrypted.data);
-                }
-
-                console.log('Download complete');
-
-                var blob = dataUrlToBlob(decrypted.data);
-                var objectURL = URL.createObjectURL(blob);
-                uiSetDownloadComplete(objectURL, file.filename);
-            });
         }
     });
 }
@@ -252,17 +243,9 @@ function downloadFileById(id, passphrase) {
         type: 'GET',
         dataType: 'json',
         error: function(jqXHR, textStatus) {
-            if (debug) {
-                console.log('Download request failed; StatusCode=['+jqXHR.status+'] Message=['+jqXHR.statusText+'] ResponseText=['+jqXHR.responseText +']');
-            }
-
             uiSetDownloadFailed('Failed to retrieve file: '+jqXHR.responseText);
         },
         success: function(file, textStatus, jqXHR) {
-            if (debug) {
-                console.log('Retrieved file: '+file.filename);
-            }
-
             downloadFile(file, passphrase);
         }
     });
@@ -337,11 +320,9 @@ document.addEventListener('click', function(e) {
 
 
 
-
-
 var idMatch = window.location.pathname.match(/([a-zA-Z0-9]+)/);
-var pwMatch = window.location.hash.match(/([a-zA-Z0-9]+)/);
-if (idMatch != null && pwMatch != null) {
+if (idMatch != null) {
     console.log('Found download ID: '+idMatch[1]);
-    downloadFileById(idMatch[1], pwMatch[1]);
+    var pwMatch = window.location.hash.match(/([a-zA-Z0-9]+)/);
+    downloadFileById(idMatch[1], (pwMatch != null) ? pwMatch[1] : null);
 }

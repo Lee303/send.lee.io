@@ -1,3 +1,13 @@
+<?php
+if ($_SERVER['REQUEST_METHOD'] == 'PUT')
+{
+    ob_start();
+    include('upload.php');
+    $output = ob_get_clean();
+    echo "https://send.lee.io/".json_decode($output)->id."\n";
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,15 +25,7 @@
         <div id="content" class="content">
             <input type="file" name="files[]" id="input" class="input" multiple/>
             Drag+drop or click here to upload  <a href="#" data-tooltip onclick="" class="left-margin"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>
-            <!-- <span class="info">Files are encrypted/decrypted client-side, and automatically removed after 24 hours or burned on download</span> -->
         </div>
-        <!-- <div class="select-style">
-          <select>
-            <option value="a">a</option>
-            <option value="b">b</option>
-            <option value="c">c</option>
-          </select>
-        </div> -->
     </div>
 
 <script src="/js/vendor/jquery.min.js"></script>

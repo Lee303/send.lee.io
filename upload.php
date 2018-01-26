@@ -2,22 +2,22 @@
 
 include_once('config.php');
 include_once('../../globals/class/db.class.php');
-include_once('class/crypt_file.class.php');
+include_once('class/file.class.php');
 
 try
 {
     $db = new db(DB_HOST, DB_NAME, DB_USER, DB_PASSWORD);
 
-    $crypt_file = crypt_file::create($db);
-    $crypt_file->filename = $_GET['filename'];
-    $crypt_file->expire_timestamp = (time()+86400);
-    $crypt_file->save();
+    $file = file::create($db);
+    $file->filename = ($_GET['filename'] != null) ? $_GET['filename'] : time();
+    $file->expire_timestamp = (time()+86400);
+    $file->save();
 
     $putdata = fopen("php://input", "r");
-    $crypt_file->write_stream($putdata);
+    $file->write_stream($putdata);
     fclose($putdata);
 
-    echo json_encode(array('id'=>$crypt_file->uniq_id));
+    echo json_encode(array('id'=>$file->uniq_id));
 }
 catch(Exception $ex)
 {
